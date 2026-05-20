@@ -20,7 +20,7 @@ Note: if Docker is not installed, started, or set up, `sbox-build` will walk you
 
 ## Update
 ```
-sudo curl -L https://raw.githubusercontent.com/vinceTheProgrammer/sbox-win-docker/refs/heads/main/sbox-build -o /usr/local/bin/sbox-build
+sudo curl -L https://raw.githubusercontent.com/vinceTheProgrammer/sbox-wine-docker/refs/heads/main/sbox-build -o /usr/local/bin/sbox-build
 sudo chmod +x /usr/local/bin/sbox-build
 sbox-build --pull # or sbox-build --rebuild --update
 ```

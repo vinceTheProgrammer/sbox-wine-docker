@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LOCAL_IMAGE="sbox-win-docker"
-REMOTE_IMAGE="ghcr.io/vincetheprogrammer/sbox-win-docker:main"
-REPO_URL="https://github.com/vinceTheProgrammer/sbox-win-docker"
+LOCAL_IMAGE="sbox-wine-docker"
+REMOTE_IMAGE="ghcr.io/vincetheprogrammer/sbox-wine-docker:main"
+REPO_URL="https://github.com/vinceTheProgrammer/sbox-wine-docker"
 INSTALL_DOCS_URL="https://docs.docker.com/engine/install/"
 
-DEFAULT_SRC_DIR="$HOME/.local/share/sbox-win-docker"
+DEFAULT_SRC_DIR="$HOME/.local/share/sbox-wine-docker"
 
 NO_PROMPT=0
 FORCE_PULL=0
@@ -229,7 +229,7 @@ pull_image() {
   docker tag "$REMOTE_IMAGE" "$LOCAL_IMAGE"
 }
 
-is_valid_sbox_win_docker_repo() {
+is_valid_sbox_wine_docker_repo() {
   if [[ ! -d "$SRC_DIR/.git" ]]; then
     return 1
   fi
@@ -243,7 +243,7 @@ is_valid_sbox_win_docker_repo() {
   local origin_url=""
   origin_url="$(git -C "$SRC_DIR" remote get-url origin 2>/dev/null || true)"
 
-  if [[ "$origin_url" != *"vinceTheProgrammer/sbox-win-docker"* ]]; then
+  if [[ "$origin_url" != *"vinceTheProgrammer/sbox-wine-docker"* ]]; then
     return 1
   fi
 
@@ -252,17 +252,17 @@ is_valid_sbox_win_docker_repo() {
 
 ensure_repo_exists() {
   if [[ -d "$SRC_DIR" ]]; then
-    if is_valid_sbox_win_docker_repo; then
+    if is_valid_sbox_wine_docker_repo; then
       return 0
     fi
 
-    echo "ERROR: '$SRC_DIR' exists but does not appear to be the sbox-win-docker repo."
+    echo "ERROR: '$SRC_DIR' exists but does not appear to be the sbox-wine-docker repo."
     echo "Refusing to use it (prevents accidentally building unrelated Dockerfiles)."
     echo
     echo "Expected:"
     echo "  - Dockerfile"
     echo "  - sbox-build"
-    echo "  - origin remote containing: vinceTheProgrammer/sbox-win-docker"
+    echo "  - origin remote containing: vinceTheProgrammer/sbox-wine-docker"
     echo
     echo "Fix options:"
     echo "  - choose another directory with --src-dir"
@@ -279,7 +279,7 @@ ensure_repo_exists() {
     exit 1
   fi
 
-  if ! prompt_yes_no "Clone sbox-win-docker repo into '$SRC_DIR'? (Y/n): " "Y"; then
+  if ! prompt_yes_no "Clone sbox-wine-docker repo into '$SRC_DIR'? (Y/n): " "Y"; then
     echo "ERROR: Cannot rebuild without a local repo."
     exit 1
   fi
