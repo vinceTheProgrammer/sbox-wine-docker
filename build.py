@@ -348,10 +348,17 @@ def should_build_hash_cache(csproj: Path):
     new_hash = compute_project_hash(csproj)
     cache_file = cache_file_for(csproj)
 
-    if cache_file.exists():
-        old_hash = cache_file.read_text().strip()
-        if old_hash == new_hash:
-            return False
+    # Missing cache entry:
+    # initialize it and assume unchanged
+    if not cache_file.exists():
+        cache_file.write_text(new_hash + "\n")
+        print(f"==> Initialized hash cache: {csproj.relative_to(ROOT)}")
+        return False
+
+    old_hash = cache_file.read_text().strip()
+
+    if old_hash == new_hash:
+        return False
 
     cache_file.write_text(new_hash + "\n")
     return True
@@ -534,6 +541,7 @@ def main():
             if prompt_yes_no("Enable hash cache mode? (change based smart building that does not rely on git commits) ; Creates .sboxbuild_cache folder", default=True):
                 if not CACHE_DIR.exists():
                     CACHE_DIR.mkdir(parents=True, exist_ok=True)
+                    init_hash_cache()
                 print("==> Hash cache enabled.")
 
             if prompt_yes_no("Enable CodeGen.Targets patch? (experimental CodeGen.Targets patch that skips re-running codegen if already generated) ; Creates .sboxbuild_codegen_patch file", default=False):
